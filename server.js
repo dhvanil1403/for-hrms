@@ -11,12 +11,8 @@ const puppeteer = require('puppeteer-core');
 
 async function automateLogin() {
   try {
-       // Get the correct executable path for Chrome
-    const executablePath = execSync('which google-chrome-stable').toString().trim();
-    console.log('Chrome executable path:', executablePath);
-
-    const browser = await puppeteer.launch({
-      executablePath: executablePath, // Use the dynamic path of Chrome
+     const browser = await puppeteer.launch({
+      executablePath: '/usr/bin/google-chrome-stable', // Directly use the installed Chrome
       headless: true, // Run in headless mode
       args: [
         '--no-sandbox',  // Disable sandboxing for cloud environments like Render
