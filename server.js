@@ -52,7 +52,7 @@ console.log('Sign Out button clicked.');
     console.log('Successfully logged out.');
 
     // Send success email
-    await sendEmail('Logout Success');
+     //  await sendEmail('Logout Success');
 
     // Close the browser
     await browser.close();
@@ -122,7 +122,7 @@ cron.schedule('3 9 * * *', () => {
 });
 
 // Schedule the job for 18:05 IST
-cron.schedule('30 14 * * *', () => {
+cron.schedule('45 16 * * *', () => {
   console.log('Executing login automation at 18:05 IST...');
   automateLogin();
 }, {
