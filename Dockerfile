@@ -1,4 +1,8 @@
 # Use Node.js as the base image
+# Set environment variable for Puppeteer cache directory
+ENV PUPPETEER_CACHE_DIR=/tmp/puppeteer
+
+# Continue with your Dockerfile's contents...
 FROM node:16
 
 # Install dependencies for Puppeteer and Chromium
