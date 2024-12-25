@@ -18,11 +18,15 @@ RUN apt-get update && apt-get install -y \
     curl \
     && apt-get clean
 
-# Install Chromium (to be used with Puppeteer)
+# Install Google Chrome
 RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome.deb \
     && dpkg -i google-chrome.deb \
     && apt-get install -y -f \
     && rm google-chrome.deb
+
+# Check Chrome Installation Path
+RUN which google-chrome-stable
+RUN google-chrome-stable --version
 
 # Set the working directory
 WORKDIR /app
