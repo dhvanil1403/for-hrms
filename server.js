@@ -40,7 +40,7 @@ async function getExecutablePath() {
     throw error;
   }
 }
-}
+
 
 async function automateLogin() {
   try {
