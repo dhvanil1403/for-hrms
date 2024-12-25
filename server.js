@@ -1,26 +1,45 @@
 
 const express = require('express');
 const app = express();
-const execSync = require('child_process').execSync;  // Import execSync
+//const execSync = require('child_process').execSync;   Import execSync
 const PORT = process.env.PORT || 3000;
 
 
 const cron = require('node-cron');
 
 const puppeteer = require('puppeteer-core');
+const { execSync } = require('child_process');
+
+async function getExecutablePath() {
+  try {
+    // Try to find Chromium or Google Chrome executable
+    const chromePath = execSync('which google-chrome-stable || which chromium').toString().trim();
+    if (!chromePath) {
+      throw new Error('Chromium or Google Chrome not found');
+    }
+    return chromePath;
+  } catch (error) {
+    console.error('Error finding Chromium executable:', error);
+    throw error;
+  }
+}
 
 async function automateLogin() {
   try {
-     const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome-stable', // Directly use the installed Chrome
-      headless: true, // Run in headless mode
+    const executablePath = await getExecutablePath(); // Get the correct executable path dynamically
+    console.log('Using Chrome executable at:', executablePath);
+
+    const browser = await puppeteer.launch({
+      executablePath, // Use dynamically detected executable path
+      headless: true,
       args: [
-        '--no-sandbox',  // Disable sandboxing for cloud environments like Render
+        '--no-sandbox', 
         '--disable-setuid-sandbox',
-        '--disable-gpu', // Disable GPU hardware acceleration
-        '--remote-debugging-port=9222', // For debugging if needed
+        '--disable-gpu',
+        '--remote-debugging-port=9222',
       ],
     });
+
     const page = await browser.newPage();
 
     // Navigate to the login page
