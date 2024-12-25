@@ -14,11 +14,8 @@ RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
     --no-install-recommends && \
-    # Download and install Chromium
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    dpkg -i google-chrome-stable_current_amd64.deb && \
-    apt-get install -f -y && \
-    rm google-chrome-stable_current_amd64.deb
+    # Install Chromium (in case 'google-chrome-stable' is not found)
+    apt-get install -y chromium
 
 # Set the working directory
 WORKDIR /app
@@ -28,9 +25,6 @@ COPY . .
 
 # Install Node.js dependencies
 RUN npm install
-
-# Install Puppeteer browsers
-RUN npx puppeteer browsers install chrome
 
 # Expose the application's port
 EXPOSE 3000
