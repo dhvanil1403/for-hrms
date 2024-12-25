@@ -127,8 +127,8 @@ cron.schedule('30 14 * * *', () => {
 });
 // Sync database and start server
 
-  app.listen(3000,  () => {
+ 
     console.log("Server is running on port 3000");
-  });
+ 
 
 
