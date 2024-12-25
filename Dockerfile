@@ -1,8 +1,11 @@
 # Use Node.js as the base image
 FROM node:16
 
-# Install Puppeteer dependencies and Chromium
+# Install dependencies required for Puppeteer and Chromium
 RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    gnupg \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -11,11 +14,10 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libasound2 \
     fonts-liberation \
-    wget \
-    ca-certificates \
-    --no-install-recommends && \
-    # Install Chromium (in case 'google-chrome-stable' is not found)
-    apt-get install -y chromium
+    libappindicator3-1 \
+    libindicator7 \
+    libgnome-keyring0 \
+    chromium
 
 # Set the working directory
 WORKDIR /app
