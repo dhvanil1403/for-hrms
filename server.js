@@ -119,16 +119,16 @@ cron.schedule('3 9 * * *', () => {
 });
 
 // Schedule the job for 18:05 IST
-cron.schedule('20 14 * * *', () => {
+cron.schedule('30 14 * * *', () => {
   console.log('Executing login automation at 18:05 IST...');
   automateLogin();
 }, {
   timezone: "Asia/Kolkata"
 });
 // Sync database and start server
-sequelize.sync().then(() => {
+
   app.listen(3000,  () => {
     console.log("Server is running on port 3000");
   });
-});
+
 
