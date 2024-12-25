@@ -11,11 +11,16 @@ const puppeteer = require('puppeteer-core');
 
 async function automateLogin() {
   try {
-   const browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome-stable', // Path to Chromium in Render's environment
-      headless: true,  // Headless mode to run in cloud environments
-      userDataDir: '/tmp/puppeteer',  // Use a temporary directory for Puppeteer's data
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Additional flags for Render's environment
+     const browser = await puppeteer.launch({
+      executablePath: '/usr/bin/google-chrome-stable', // Path to Chrome installed via the above method
+      headless: true, // Use headless mode
+      userDataDir: '/tmp/puppeteer', // Store user data in tmp folder
+      args: [
+        '--no-sandbox',  // Disable sandboxing for cloud environments like Render
+        '--disable-setuid-sandbox',
+        '--disable-gpu', // Disable GPU hardware acceleration
+        '--remote-debugging-port=9222', // For debugging if needed
+      ],
     });
     const page = await browser.newPage();
 
