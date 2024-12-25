@@ -1,10 +1,8 @@
 # Use Node.js as the base image
 FROM node:16
 
-# Install necessary dependencies
+# Install Puppeteer dependencies and Chromium
 RUN apt-get update && apt-get install -y \
-    wget \
-    ca-certificates \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -13,20 +11,14 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libasound2 \
     fonts-liberation \
-    libappindicator3-1 \
-    libgbm1 \
-    curl \
-    && apt-get clean
-
-# Install Google Chrome
-RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome.deb \
-    && dpkg -i google-chrome.deb \
-    && apt-get install -y -f \
-    && rm google-chrome.deb
-
-# Check Chrome Installation Path
-RUN which google-chrome-stable
-RUN google-chrome-stable --version
+    wget \
+    ca-certificates \
+    --no-install-recommends && \
+    # Download and install Chromium
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i google-chrome-stable_current_amd64.deb && \
+    apt-get install -f -y && \
+    rm google-chrome-stable_current_amd64.deb
 
 # Set the working directory
 WORKDIR /app
@@ -36,6 +28,9 @@ COPY . .
 
 # Install Node.js dependencies
 RUN npm install
+
+# Install Puppeteer browsers
+RUN npx puppeteer browsers install chrome
 
 # Expose the application's port
 EXPOSE 3000
