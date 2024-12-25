@@ -13,23 +13,24 @@ const path = require('path');
 
 async function getExecutablePath() {
   try {
-    // Try directly checking common paths for Google Chrome and Chromium
+    // Try checking for Chromium or Google Chrome using `which` command
     const possiblePaths = [
-      '/usr/bin/google-chrome-stable',
-      '/usr/bin/chromium',
-      '/usr/local/bin/chromium-browser',
-      '/opt/google/chrome/chrome',
+      'google-chrome-stable',
+      'chromium',
+      'chromium-browser'
     ];
 
-    for (const chromePath of possiblePaths) {
+    for (const browser of possiblePaths) {
       try {
-        // Check if the file exists at the path
-        execSync(`test -f ${chromePath}`);
-        console.log(`Found browser at: ${chromePath}`);
-        return chromePath; // Return the first valid path
+        // Run the `which` command to locate the browser
+        const path = execSync(`which ${browser}`).toString().trim();
+        if (path) {
+          console.log(`Found browser at: ${path}`);
+          return path; // Return the first valid path
+        }
       } catch (error) {
-        // Continue to next path if the current one doesn't exist
-        console.log(`Browser not found at: ${chromePath}`);
+        // Continue to the next browser path if `which` fails
+        console.log(`Browser not found for: ${browser}`);
       }
     }
 
@@ -38,6 +39,7 @@ async function getExecutablePath() {
     console.error('Error finding Chromium executable:', error);
     throw error;
   }
+}
 }
 
 async function automateLogin() {
