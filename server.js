@@ -7,12 +7,16 @@ const PORT = process.env.PORT || 3000;
 
 const cron = require('node-cron');
 
-
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 
 async function automateLogin() {
   try {
-    const browser = await puppeteer.launch({ headless: false });
+   const browser = await puppeteer.launch({
+      executablePath: '/usr/bin/google-chrome-stable', // Path to Chromium in Render's environment
+      headless: true,  // Headless mode to run in cloud environments
+      userDataDir: '/tmp/puppeteer',  // Use a temporary directory for Puppeteer's data
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],  // Additional flags for Render's environment
+    });
     const page = await browser.newPage();
 
     // Navigate to the login page
