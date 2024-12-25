@@ -9,15 +9,31 @@ const cron = require('node-cron');
 
 const puppeteer = require('puppeteer-core');
 const { execSync } = require('child_process');
+const path = require('path');
 
 async function getExecutablePath() {
   try {
-    // Try to find Chromium or Google Chrome executable
-    const chromePath = execSync('which google-chrome-stable || which chromium').toString().trim();
-    if (!chromePath) {
-      throw new Error('Chromium or Google Chrome not found');
+    // Try directly checking common paths for Google Chrome and Chromium
+    const possiblePaths = [
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/chromium',
+      '/usr/local/bin/chromium-browser',
+      '/opt/google/chrome/chrome',
+    ];
+
+    for (const chromePath of possiblePaths) {
+      try {
+        // Check if the file exists at the path
+        execSync(`test -f ${chromePath}`);
+        console.log(`Found browser at: ${chromePath}`);
+        return chromePath; // Return the first valid path
+      } catch (error) {
+        // Continue to next path if the current one doesn't exist
+        console.log(`Browser not found at: ${chromePath}`);
+      }
     }
-    return chromePath;
+
+    throw new Error('Chromium or Google Chrome not found at known paths');
   } catch (error) {
     console.error('Error finding Chromium executable:', error);
     throw error;
@@ -33,7 +49,7 @@ async function automateLogin() {
       executablePath, // Use dynamically detected executable path
       headless: true,
       args: [
-        '--no-sandbox', 
+        '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-gpu',
         '--remote-debugging-port=9222',
