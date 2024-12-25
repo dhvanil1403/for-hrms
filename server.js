@@ -1,7 +1,7 @@
 
 const express = require('express');
 const app = express();
-
+const execSync = require('child_process').execSync;  // Import execSync
 const PORT = process.env.PORT || 3000;
 
 
@@ -11,8 +11,9 @@ const puppeteer = require('puppeteer-core');
 
 async function automateLogin() {
   try {
-      // Get the correct executable path for Chrome
+       // Get the correct executable path for Chrome
     const executablePath = execSync('which google-chrome-stable').toString().trim();
+    console.log('Chrome executable path:', executablePath);
 
     const browser = await puppeteer.launch({
       executablePath: executablePath, // Use the dynamic path of Chrome
