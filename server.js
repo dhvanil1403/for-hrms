@@ -119,7 +119,7 @@ cron.schedule('3 9 * * *', () => {
 });
 
 // Schedule the job for 18:05 IST
-cron.schedule('5 18 * * *', () => {
+cron.schedule('20 14 * * *', () => {
   console.log('Executing login automation at 18:05 IST...');
   automateLogin();
 }, {
