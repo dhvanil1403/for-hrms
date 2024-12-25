@@ -1,7 +1,6 @@
-# Use Node.js as the base image
 FROM node:16
 
-# Install dependencies required for Puppeteer and Chromium
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -17,19 +16,22 @@ RUN apt-get update && apt-get install -y \
     libappindicator3-1 \
     libindicator7 \
     libgnome-keyring0 \
-    chromium
+    chromium \
+    ca-certificates \
+    libgbm1 \
+    libglib2.0-0
 
 # Set the working directory
 WORKDIR /app
 
-# Copy application files
+# Copy files
 COPY . .
 
-# Install Node.js dependencies
+# Install dependencies
 RUN npm install
 
-# Expose the application's port
+# Expose port
 EXPOSE 3000
 
-# Start the application
+# Start server
 CMD ["node", "server.js"]
