@@ -1,11 +1,7 @@
 # Use Node.js as the base image
-# Set environment variable for Puppeteer cache directory
-ENV PUPPETEER_CACHE_DIR=/tmp/puppeteer
-
-# Continue with your Dockerfile's contents...
 FROM node:16
 
-# Install dependencies for Puppeteer and Chromium
+# Install necessary dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -19,13 +15,14 @@ RUN apt-get update && apt-get install -y \
     fonts-liberation \
     libappindicator3-1 \
     libgbm1 \
+    curl \
     && apt-get clean
 
-# Install Google Chrome (to use with Puppeteer)
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
+# Install Chromium (to be used with Puppeteer)
+RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome.deb \
+    && dpkg -i google-chrome.deb \
     && apt-get install -y -f \
-    && rm google-chrome-stable_current_amd64.deb
+    && rm google-chrome.deb
 
 # Set the working directory
 WORKDIR /app
@@ -35,9 +32,6 @@ COPY . .
 
 # Install Node.js dependencies
 RUN npm install
-
-# Install Puppeteer browsers (optional if you install Chrome manually)
-# RUN npx puppeteer browsers install chrome
 
 # Expose the application's port
 EXPOSE 3000
