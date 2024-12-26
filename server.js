@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 
 const cron = require('node-cron');
+console.log(puppeteer.executablePath());
 
 const puppeteer = require('puppeteer-core');
 const { execSync } = require('child_process');
