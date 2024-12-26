@@ -6,12 +6,12 @@ const PORT = process.env.PORT || 3000;
 
 
 const cron = require('node-cron');
-console.log(puppeteer.executablePath());
+
 
 const puppeteer = require('puppeteer-core');
 const { execSync } = require('child_process');
 const path = require('path');
-
+console.log(puppeteer.executablePath());
 async function getExecutablePath() {
   try {
     // Try checking for Chromium or Google Chrome using `which` command
