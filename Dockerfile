@@ -1,37 +1,30 @@
-FROM node:16
+FROM node:16-slim
 
-# Install dependencies
+# Install Chromium and dependencies
 RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
-    gnupg \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libdrm2 \
-    libxcomposite1 \
-    libxrandr2 \
-    libasound2 \
-    fonts-liberation \
-    libappindicator3-1 \
-    libindicator7 \
-    libgnome-keyring0 \
-    chromium \
-    ca-certificates \
-    libgbm1 \
-    libglib2.0-0
+  chromium \
+  libnss3 \
+  libatk1.0-0 \
+  libx11-xcb1 \
+  libxcomposite1 \
+  libxrandr2 \
+  libcups2 \
+  libpangocairo-1.0-0 \
+  libxdamage1 \
+  libxshmfence1 \
+  libgbm1 \
+  libasound2
 
-# Set the working directory
-WORKDIR /app
-
-# Copy files
-COPY . .
+# Set Chromium executable path
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Install dependencies
+WORKDIR /app
+COPY package.json ./
 RUN npm install
 
-# Expose port
-EXPOSE 3000
+# Copy application code
+COPY . .
 
-# Start server
+# Start the app
 CMD ["node", "server.js"]
