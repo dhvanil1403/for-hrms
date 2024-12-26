@@ -48,16 +48,26 @@ async function automateLogin() {
     const executablePath = await getExecutablePath(); // Get the correct executable path dynamically
     console.log('Using Chrome executable at:', executablePath);
 
-    const browser = await puppeteer.launch({
-      executablePath, // Use dynamically detected executable path
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-gpu',
-        '--remote-debugging-port=9222',
-      ],
-    });
+  const browser = await puppeteer.launch({
+  executablePath, // Use dynamically detected executable path
+  headless: true,
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--disable-extensions',
+    '--disable-background-networking',
+    '--disable-default-apps',
+    '--disable-sync',
+    '--hide-scrollbars',
+    '--mute-audio',
+    '--no-first-run',
+    '--disable-notifications',
+    '--window-size=1920,1080',
+  ],
+});
+
 
     const page = await browser.newPage();
 
